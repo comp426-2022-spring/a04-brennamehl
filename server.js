@@ -40,9 +40,18 @@ const server = app.listen(port, () => {
 //if debug is true, returns access log and error message
 if(args.debug){
 
-}
+app.get("/app/log/access", (req, res, next) =>{
+    try{
+        const logs = logdb.prepare('SELECT * FROM accesslog').all()
+        res.status(200).json(stmt)
+    } catch{
+        console.error(e)
+    }
+    next()
+});
 
 if(args.log){
+    //app.post?
     //write log files to database
 }
 
