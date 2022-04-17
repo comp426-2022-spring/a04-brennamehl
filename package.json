@@ -4,9 +4,10 @@
   "description": "Databsaes, Logs, Errors, and Middleware",
   "main": "server.js",
   "scripts": {
-    "test": "server.jsm --help",
-    "start": "node server.jsm"
+    "test": "server.mjs --help",
+    "start": "node server.mjs"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/comp426-2022-spring/a04-brennamehl.git"
