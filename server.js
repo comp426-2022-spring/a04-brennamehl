@@ -28,6 +28,7 @@ if(args.help||args.h){
 const logdb  = require("./database.js")
 const express = require("express")
 const app = express()
+const morgan = require("morgan")
 
 //sets port number
 const port = args.port ||process.env.port|| 5555
