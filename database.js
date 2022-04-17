@@ -14,8 +14,7 @@ if(row===undefined){
             method VARCHAR, 
             url VARCHAR, 
             protocol VARCHAR,
-            httpversion NUMERIC, 
-            secure BOOLEAN, 
+            httpversion NUMERIC,  
             status INTEGER, 
             referer VARCHAR,
             useragent VARCHAR
