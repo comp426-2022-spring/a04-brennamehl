@@ -74,7 +74,7 @@ if(args.debug){
     app.get("/app/log/access", (req, res) =>{
         try{
             const logs = logdb.prepare('SELECT * FROM accesslog').all();
-            res.status(200).json(stmt);
+            res.status(200).json(logs);
         } catch(e){
             console.error(e);
         }
