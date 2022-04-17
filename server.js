@@ -1,9 +1,9 @@
-const minimist = require("minimist")
-const args = minimist(process.argv.slice(2))
-args['port']
-args['help']
-args['debug']
-args['log']
+const minimist = require("minimist");
+const args = minimist(process.argv.slice(2));
+args['port'];
+args['help'];
+args['debug'];
+args['log'];
 
 const help = `server.js [options]
         --port	Set the port number for the server to listen on. Must be an integer between 1 and 65535.
@@ -20,16 +20,16 @@ const help = `server.js [options]
 
 //If help is true, prints the help content to the log
 if(args.help||args.h){
-    console.log(help)
-    process.exit(0)
+    console.log(help);
+    process.exit(0);
 }
 
 //other imports and dependencies
-const logdb  = require("./database.js")
-const express = require("express")
-const app = express()
-const morgan = require("morgan")
-const fs = require("fs")
+const logdb  = require("./database.js");
+const express = require("express");
+const app = express();
+const morgan = require("morgan");
+const fs = require("fs");
 app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
 
@@ -38,18 +38,18 @@ app.use(express.json());
 const port = args.port ||process.env.port|| 5555;
 
 const server = app.listen(port, () => {
-    console.log(`App is running on port %PORT%`.replace(`%PORT%`,port))
+    console.log(`App is running on port %PORT%`.replace(`%PORT%`,port));
      })
 
 
 //creates access log if log is true
 if(args.log){
-const WRITESTREAM = fs.createWriteStream('access.log', { flags: 'a' })
+const WRITESTREAM = fs.createWriteStream('access.log', { flags: 'a' });
 // Set up the access logging middleware
-app.use(morgan('combined', { stream: WRITESTREAM }))
+app.use(morgan('combined', { stream: WRITESTREAM }));
 }
 
-app.use( (req, res, next) => {
+app.use((req, res, next) => {
     let logdata = {
         remoteaddr: req.ip,
         remoteuser: req.user,
@@ -61,10 +61,10 @@ app.use( (req, res, next) => {
         status: res.statusCode,
         referer: req.headers['referer'],
         useragent: req.headers['user-agent']
-    }
-    console.log(logdata)
-    const stmt = logdb.prepare('INSERT INTO accesslog (remoteaddr, remoteuser, time, method, url, protocol, httpversion, status, referer, useragent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
-    const info = stmt.run(logdata.remoteaddr, logdata.remoteuser, logdata.time, logdata.method, logdata.url, logdata.protocol, logdata.httpversion, logdata.status, logdata.referer, logdata.useragent)
+    };
+    //console.log(logdata);
+    const stmt = logdb.prepare('INSERT INTO accesslog (remoteaddr, remoteuser, time, method, url, protocol, httpversion, status, referer, useragent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+    const info = stmt.run(logdata.remoteaddr, logdata.remoteuser, logdata.time, logdata.method, logdata.url, logdata.protocol, logdata.httpversion, logdata.status, logdata.referer, logdata.useragent);
     next();
     })
 
@@ -73,61 +73,59 @@ if(args.debug){
 
     app.get("/app/log/access", (req, res) =>{
         try{
-            const logs = logdb.prepare('SELECT * FROM accesslog').all()
-            res.status(200).json(stmt)
+            const logs = logdb.prepare('SELECT * FROM accesslog').all();
+            res.status(200).json(stmt);
         } catch(e){
-            console.error(e)
+            console.error(e);
         }
     });
 
     app.get("/app/log/error", (req, res) => {
-        throw new Error('Error Test Successful')
+        throw new Error('Error Test Successful');
     });
 
 }
 
-
+ //app endpoint
+ app.get("/app", (req, res) =>{
+    res.statusCode = 200;
+    res.statusMessage = 'OK';
+    res.writeHead( res.statusCode, { 'Content-Type' : 'text/plain' });
+    res.end(res.statusCode+ ' ' +res.statusMessage);
+})  
 
 //multiple flips endpoint
 app.get("/app/flips/:number", (req, res) =>{
-    let flipsArr = coinFlips(req.params.number)
-    res.status(200).json({ "raw" : flipsArr , "summary": countFlips(flipsArr)})
-    res.type("text/plain")
+    let flipsArr = coinFlips(req.params.number);
+    res.status(200).json({ "raw" : flipsArr , "summary": countFlips(flipsArr)});
+    res.type("text/plain");
 })  
 
 //flip with heads guess endpoint
 app.get("/app/flip/call/heads", (req, res) =>{
-    let result = flipACoin("heads")
-    res.status(200).json({"call" : result.call, "flip" : result.flip, "result" : result.result})
-    res.type("text/plain")
+    let result = flipACoin("heads");
+    res.status(200).json({"call" : result.call, "flip" : result.flip, "result" : result.result});
+    res.type("text/plain");
 })
 
 //flip with tails guess endpoint
 app.get("/app/flip/call/tails", (req, res) =>{
-    let result = flipACoin("tails")
-    res.status(200).json({"call" : result.call, "flip" : result.flip, "result" : result.result})
-    res.type("text/plain")
+    let result = flipACoin("tails");
+    res.status(200).json({"call" : result.call, "flip" : result.flip, "result" : result.result});
+    res.type("text/plain");
 })
 
 //flip endpoint
 app.get("/app/flip", (req, res) =>{
-    res.status(200).json({ "flip" : coinFlip() })
-    res.type("text/plain")
+    res.status(200).json({ "flip" : coinFlip() });
+    res.type("text/plain");
 })
 
     
- //default endpoint
- app.get("/app", (req, res) =>{
-    res.statusCode = 200
-    res.statusMessage = 'OK';
-    res.writeHead( res.statusCode, { 'Content-Type' : 'text/plain' })
-    res.end(res.statusCode+ ' ' +res.statusMessage)
-})  
-    
 //endpoint for nonexistent URL
 app.use(function(req, res){
-    res.status(404).send('404 NOT FOUND')
-    res.type("text/plain")
+    res.status(404).send('404 NOT FOUND');
+    res.type("text/plain");
  })
 
 
