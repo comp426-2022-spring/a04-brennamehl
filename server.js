@@ -42,6 +42,13 @@ const server = app.listen(port, () => {
      })
     
     
+ //default endpoint
+ app.get("/app", (req, res) =>{
+    res.statusCode = 200
+    res.statusMessage = 'OK';
+    res.writeHead( res.statusCode, { 'Content-Type' : 'text/plain' })
+    res.end(res.statusCode+ ' ' +res.statusMessage)
+})  
 
 //creates access log if debug is true
 if(args.log){
@@ -66,7 +73,7 @@ app.use( (req, res, next) => {
     console.log(logdata)
     const stmt = logdb.prepare('INSERT INTO accesslog (remoteaddr, remoteuser, time, method, url, protocol, httpversion, status, referer, useragent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
     const info = stmt.run(logdata.remoteaddr, logdata.remoteuser, logdata.time, logdata.method, logdata.url, logdata.protocol, logdata.httpversion, logdata.status, logdata.referer, logdata.useragent)
-  next();
+    next();
     })
 
 //if debug is true, returns access log and error message
@@ -118,19 +125,13 @@ app.get("/app/flip", (req, res) =>{
     res.type("text/plain")
 })
 
- //default endpoint
-app.get("/app", (req, res) =>{
-     res.statusCode = 200
-     res.statusMessage = 'OK';
-     res.writeHead( res.statusCode, { 'Content-Type' : 'text/plain' })
-     res.end(res.statusCode+ ' ' +res.statusMessage)
-      
+    
 //endpoint for nonexistent URL
 app.use(function(req, res){
     res.status(404).send('404 NOT FOUND')
     res.type("text/plain")
  })
- })
+
 
 
  /** Coin flip functions 
