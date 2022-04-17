@@ -26,7 +26,7 @@ if(args.help||args.h){
 
 //other imports and dependencies
 import {coinFlip, coinFlips, countFlips, flipACoin} from "./modules/coin.mjs"
-const logdb = require("./database")
+import logdb  from "./database"
 import express from "express"
 const app = express()
 
