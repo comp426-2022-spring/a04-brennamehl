@@ -5,9 +5,7 @@ args['help']
 args['debug']
 args['log']
 
-//If help is true, prints the help content to the log
-if(args.help){
-const helpDescription = `server.js [options]
+const help = `server.js [options]
 --port	Set the port number for the server to listen on. Must be an integerbetween 1 and 65535.
 
 --debug	If set to \`true\`, creates endpoints /app/log/access/ which returns
@@ -19,7 +17,11 @@ const helpDescription = `server.js [options]
             Logs are always written to database.
 
 --help	Return this message and exit.`;
-    console.log(helpDescription)
+
+//If help is true, prints the help content to the log
+if(args.help||args.h){
+    console.log(help)
+    process.exit(0)
 }
 
 //other imports and dependencies

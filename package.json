@@ -4,8 +4,8 @@
   "description": "Databsaes, Logs, Errors, and Middleware",
   "main": "server.js",
   "scripts": {
-    "test": "server.js --help",
-    "start": "node server.js"
+    "test": "server.jsm --help",
+    "start": "node server.jsm"
   },
   "repository": {
     "type": "git",
