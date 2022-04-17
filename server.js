@@ -80,7 +80,7 @@ if(args.debug){
         }
     });
 
-    app.get("/app/log/error", (req, res) => {
+    app.get("/app/error", (req, res) => {
         throw new Error('Error Test Successful');
     });
 
