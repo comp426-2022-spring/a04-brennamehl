@@ -43,7 +43,7 @@ const server = app.listen(port, () => {
 
 
 //creates access log if log is true
-if(args.log){
+if(args.log==true){
 const WRITESTREAM = fs.createWriteStream('access.log', { flags: 'a' });
 // Set up the access logging middleware
 app.use(morgan('combined', { stream: WRITESTREAM }));
