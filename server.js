@@ -50,6 +50,12 @@ app.get("/app/log/access", (req, res, next) =>{
     next()
 });
 
+app.get("/app/log/error", (req, res, next) => {
+    throw new Error('Error Test Successful')
+    next()
+});
+
+}
 if(args.log){
     //app.post?
     //write log files to database
