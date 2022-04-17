@@ -50,29 +50,45 @@ const WRITESTREAM = fs.createWriteStream('access.log', { flags: 'a' })
 app.use(morgan('combined', { stream: WRITESTREAM }))
 }
 
+app.use( (req, res, next) => {
+    let logdata = {
+        remoteaddr: req.ip,
+        remoteuser: req.user,
+        time: Date.now(),
+        method: req.method,
+        url: req.url,
+        protocol: req.protocol,
+        httpversion: req.httpVersion,
+        status: res.statusCode,
+        referer: req.headers['referer'],
+        useragent: req.headers['user-agent']
+    }
+    console.log(logdata)
+    const stmt = logdb.prepare('INSERT INTO accesslog (remoteaddr, remoteuser, time, method, url, protocol, httpversion, status, referer, useragent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
+    const info = stmt.run(logdata.remoteaddr, logdata.remoteuser, logdata.time, logdata.method, logdata.url, logdata.protocol, logdata.httpversion, logdata.status, logdata.referer, logdata.useragent)
+  next();
+    })
+
 //if debug is true, returns access log and error message
 if(args.debug){
 
-app.get("/app/log/access", (req, res, next) =>{
-    try{
-        const logs = logdb.prepare('SELECT * FROM accesslog').all()
-        res.status(200).json(stmt)
-    } catch{
-        console.error(e)
-    }
-    next()
-});
+    app.get("/app/log/access", (req, res, next) =>{
+        try{
+            const logs = logdb.prepare('SELECT * FROM accesslog').all()
+            res.status(200).json(stmt)
+        } catch{
+            console.error(e)
+        }
+        next()
+    });
 
-app.get("/app/log/error", (req, res, next) => {
-    throw new Error('Error Test Successful')
-    next()
-});
+    app.get("/app/log/error", (req, res, next) => {
+        throw new Error('Error Test Successful')
+        next()
+    });
 
 }
-if(args.log){
-    //app.post?
-    //write log files to database
-}
+
 
 
 //multiple flips endpoint

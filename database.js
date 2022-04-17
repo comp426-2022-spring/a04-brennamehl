@@ -13,7 +13,7 @@ if(row===undefined){
             id INTEGER PRIMARY KEY, 
             remoteaddr VARCHAR, 
             remoteuser VARCHAR, 
-            date VARCHAR, 
+            time VARCHAR, 
             method VARCHAR, 
             url VARCHAR, 
             protocol VARCHAR,
