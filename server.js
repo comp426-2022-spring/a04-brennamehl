@@ -29,6 +29,9 @@ const logdb  = require("./database.js")
 const express = require("express")
 const app = express()
 const morgan = require("morgan")
+app.use(express.urlencoded({ extended: true}));
+app.use(express.json());
+
 
 //sets port number
 const port = args.port ||process.env.port|| 5555
@@ -38,6 +41,14 @@ const server = app.listen(port, () => {
      })
     
     
+
+//creates access log if debug is true
+if(args.log){
+const WRITESTREAM = fs.createWriteStream('access.log', { flags: 'a' })
+// Set up the access logging middleware
+app.use(morgan('combined', { stream: WRITESTREAM }))
+}
+
 //if debug is true, returns access log and error message
 if(args.debug){
 
