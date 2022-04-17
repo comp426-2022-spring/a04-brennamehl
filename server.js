@@ -35,22 +35,14 @@ app.use(express.json());
 
 
 //sets port number
-const port = args.port ||process.env.port|| 5555
+const port = args.port ||process.env.port|| 5555;
 
 const server = app.listen(port, () => {
     console.log(`App is running on port %PORT%`.replace(`%PORT%`,port))
      })
-    
-    
- //default endpoint
- app.get("/app", (req, res) =>{
-    res.statusCode = 200
-    res.statusMessage = 'OK';
-    res.writeHead( res.statusCode, { 'Content-Type' : 'text/plain' })
-    res.end(res.statusCode+ ' ' +res.statusMessage)
-})  
 
-//creates access log if debug is true
+
+//creates access log if log is true
 if(args.log){
 const WRITESTREAM = fs.createWriteStream('access.log', { flags: 'a' })
 // Set up the access logging middleware
@@ -79,19 +71,17 @@ app.use( (req, res, next) => {
 //if debug is true, returns access log and error message
 if(args.debug){
 
-    app.get("/app/log/access", (req, res, next) =>{
+    app.get("/app/log/access", (req, res) =>{
         try{
             const logs = logdb.prepare('SELECT * FROM accesslog').all()
             res.status(200).json(stmt)
-        } catch{
+        } catch(e){
             console.error(e)
         }
-        next()
     });
 
-    app.get("/app/log/error", (req, res, next) => {
+    app.get("/app/log/error", (req, res) => {
         throw new Error('Error Test Successful')
-        next()
     });
 
 }
@@ -125,6 +115,14 @@ app.get("/app/flip", (req, res) =>{
     res.type("text/plain")
 })
 
+    
+ //default endpoint
+ app.get("/app", (req, res) =>{
+    res.statusCode = 200
+    res.statusMessage = 'OK';
+    res.writeHead( res.statusCode, { 'Content-Type' : 'text/plain' })
+    res.end(res.statusCode+ ' ' +res.statusMessage)
+})  
     
 //endpoint for nonexistent URL
 app.use(function(req, res){

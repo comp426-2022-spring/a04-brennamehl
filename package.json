@@ -4,8 +4,8 @@
   "description": "Databsaes, Logs, Errors, and Middleware",
   "main": "server.js",
   "scripts": {
-    "test": "server.mjs --help",
-    "start": "node server.mjs"
+    "test": "server.js --help",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
   "homepage": "https://github.com/comp426-2022-spring/a04-brennamehl#readme",
   "dependencies": {
     "better-sqlite3": "^7.5.0",
+    "curl": "^0.1.4",
     "express": "^4.17.3",
     "minimist": "^1.2.6",
     "morgan": "^1.10.0"
