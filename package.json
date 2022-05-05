@@ -1,0 +1,27 @@
+{
+  "name": "a04-brennamehl-1",
+  "version": "1.0.0",
+  "description": "Databsaes, Logs, Errors, and Middleware",
+  "main": "server.js",
+  "scripts": {
+    "test": "server.js --help",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/comp426-2022-spring/a04-brennamehl.git"
+  },
+  "author": "Brenna Mehl",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/comp426-2022-spring/a04-brennamehl/issues"
+  },
+  "homepage": "https://github.com/comp426-2022-spring/a04-brennamehl#readme",
+  "dependencies": {
+    "better-sqlite3": "^7.5.0",
+    "curl": "^0.1.4",
+    "express": "^4.17.3",
+    "minimist": "^1.2.6",
+    "morgan": "^1.10.0"
+  }
+}
